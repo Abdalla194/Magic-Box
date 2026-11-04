@@ -4,11 +4,24 @@
 using namespace std;
 int main() {
   int size, row, col;
-  cout << "Enter the size of the magic square: ";
-  cin >> size;
+  while (true) {
+    cout << "Enter the size of the magic square: ";
+    if (cin >> size) {
+      if (size > 0 && size % 2 != 0) {
+        break;
+      } else {
+        cout << "please enter an odd number: \n";
+      }
+    } else {
+      cout << "please enter an integer odd number \n";
+      cin.clear();
+      cin.ignore(10000, '\n');
+    }
+  }
+
   row = 1;
   col = (size + 1) / 2;
-  display((col * 4) + 5, (row * 3) + 5, " 1 ");
+  display((col * 4) + 50, (row * 3) + 5, " 1 ");
   system("sleep 0.3");
   for (int i = 2; i <= size * size; i++) {
     if ((i - 1) % size != 0) {
@@ -23,7 +36,7 @@ int main() {
     } else {
       row++;
     }
-    display((col * 4) + 5, (row * 3) + 5, " " + to_string(i) + " ");
+    display((col * 4) + 50, (row * 3) + 5, " " + to_string(i) + " ");
     system("sleep 0.3");
   }
   display(1, 50, "Press any key to exit...");
