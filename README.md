@@ -1,56 +1,73 @@
-# Magic Square Console App
+# Magic Square Visualizer
 
-A compact C++ project that generates and displays a magic square in the terminal using custom terminal positioning and color utilities. The project combines a reusable library with a simple console application to produce a visually structured numeric pattern.
+A lightweight C++ console application that generates an odd-order magic square and renders it in the terminal using cursor positioning and color styling. The project combines a reusable display library with a simple interactive console program to create a visually appealing numeric pattern.
 
 ## Overview
 
 This project demonstrates:
 
-- generation of odd-order magic squares
-- terminal cursor positioning via ANSI escape sequences
-- colored console output
-- a small static library and executable workflow in C++
+- generation of odd-sized magic squares
+- terminal cursor control with ANSI escape sequences
+- animated number placement in the console
+- reusable C++ library design using a static library
 
-The application is intentionally lightweight and focused on terminal-based visualization, making it useful as a learning project or a small utility for demos.
+The application is designed for learning, demos, and terminal-based visualization experiments. It is intentionally simple, portable, and easy to build.
 
 ## Features
 
 - Generates a magic square for any odd integer size
-- Positions values in a terminal grid using coordinates
-- Supports multiple text colors such as red, green, blue, yellow, magenta, cyan, and white
-- Uses a reusable C++ library for display logic
-- Produces a visual, interactive console output with delayed updates
+- Positions values on the terminal using coordinate-based output
+- Supports multiple terminal colors: red, green, yellow, blue, magenta, cyan, and white
+- Uses a clean separation between logic and terminal rendering
+- Includes a static library build workflow and executable output
 
 ## Project Structure
 
 ```text
 Magic/
-├── app                     # Built executable
+├── app                     # Compiled executable
 ├── include/
-│   └── mylib.h            # Public library interface
+│   └── mylib.h            # Public library declarations
 ├── src/
-│   ├── magic.cpp          # Magic square generator application
-│   └── mylib.cpp          # Terminal color and display implementation
-├── libmylib.a             # Static library build artifact
+│   ├── magic.cpp          # Main program that builds the magic square
+│   └── mylib.cpp          # Terminal color and display helpers
+├── libmylib.a             # Static library artifact
 ├── README.md              # Project documentation
-└── .git/                  # Git metadata
+├── .git/                  # Git metadata
+└── .gitignore             # Git ignore rules (if present)
 ```
 
 ## Requirements
 
-- C++ compiler (g++ recommended)
-- Linux or Unix-like environment with terminal ANSI support
-- Standard C++17-compatible toolchain
+- C++ compiler such as `g++`
+- Linux or Unix-like environment
+- Terminal that supports ANSI color and cursor control sequences
 
-## Building
+## Quick Start
 
-### Option 1: Compile directly
+### 1. Build the application
 
 ```bash
 g++ -std=c++17 -Iinclude src/mylib.cpp src/magic.cpp -o app
 ```
 
-### Option 2: Build the static library and link it
+### 2. Run it
+
+```bash
+./app
+```
+
+### 3. Enter a magic-square size
+
+```text
+Enter the size of the magic square: 5
+```
+
+The program will generate a 5x5 magic square and display each value in a terminal grid.
+
+## Alternative Build Using a Static Library
+
+This project also supports a static library workflow:
 
 ```bash
 g++ -std=c++17 -Iinclude -c src/mylib.cpp -o mylib.o
@@ -58,56 +75,53 @@ ar rcs libmylib.a mylib.o
 g++ -std=c++17 -Iinclude src/magic.cpp -L. -lmylib -o app
 ```
 
-## Running
+## How It Works
 
-```bash
-./app
-```
+The program uses the standard Siamese method for odd-order magic squares. It places the first number at the center of the first row and then moves diagonally upward-left for successive numbers. When a move would go outside the bounds of the square, the implementation wraps around and continues the pattern.
 
-When prompted, enter the size of the magic square. For example:
-
-```text
-Enter the size of the magic square: 5
-```
-
-The program will generate a 5x5 magic square in the terminal.
-
-## Example Behavior
-
-The library uses terminal cursor control to place each number at a specific coordinate. The application delays each step slightly to create a visible animation in the console.
-
-A sample input/output flow looks like this:
-
-```text
-Enter the size of the magic square: 5
-```
-
-The terminal then displays a 5x5 magic square layout with numbered cells arranged according to the standard magic-square algorithm.
+The terminal output is controlled via the library functions in `include/mylib.h`, which place each value at a specific `(x, y)` coordinate on the screen.
 
 ## Library API
 
-The public interface is defined in `include/mylib.h`:
+The reusable library exposes the following interface:
 
 ```cpp
+#ifndef MYLIB2_HPP
+#define MYLIB2_HPP
+
+#include <string>
+
 void setColor(std::string color);
 void display(int x, int y, std::string message);
+
+#endif
 ```
 
-### Function behavior
+### Function Summary
 
-- `setColor(color)`: sets the active terminal color for subsequent output
-- `display(x, y, message)`: writes text to the cursor position `(x, y)`
+- `setColor(color)`: changes the active terminal color
+- `display(x, y, message)`: writes text at a specific screen position
+
+## Example Output
+
+The program prints a magic square in the terminal. For an input size of `5`, the display is arranged as a visual square grid rather than a plain numerical list.
+
+```text
+Enter the size of the magic square: 5
+```
+
+The output is rendered in the terminal with each number placed at a calculated position to form the magic square layout.
 
 ## Notes
 
-- The project currently targets terminal rendering, so output is best viewed in a terminal emulator that supports ANSI escape sequences.
-- The `display()` function uses console cursor movement to position text, which makes the output especially suitable for visual demonstrations.
-- The application focuses on odd-sized magic squares, which is the standard case handled by the Siamese method used in the code.
+- The implementation is intended for odd values such as 3, 5, 7, and so on.
+- The display is best viewed in a terminal emulator that supports ANSI escape sequences.
+- Small delays are introduced between updates to make the construction of the square visible in real time.
 
 ## License
 
-This project is provided as a learning/demo utility and is intended for educational use.
+This project is provided for educational and demonstration purposes.
 
 ## Author
 
-Developed as a small C++ terminal visualization project.
+Developed as a simple C++ terminal visualization project for learning and experimentation.
